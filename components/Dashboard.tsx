@@ -12,7 +12,7 @@ import Hint from './Hint';
 interface DashboardProps {
   transactions: Transaction[];
   savingsGoals: SavingsGoal[];
-  budgets: BudgetLimit[]; // Added for Health Score
+  budgets: BudgetLimit[]; 
   currencyFormatter: (value: number) => string;
 }
 
@@ -92,7 +92,7 @@ const Dashboard: React.FC<DashboardProps> = ({ transactions, savingsGoals, budge
 
     // 2. Expense Ratio (Target < 80% of Income) - Weight 30%
     const expenseRatio = (allExpense / allIncome) * 100;
-    const expenseScore = expenseRatio > 90 ? 0 : Math.min(100, (1 - (expenseRatio - 50)/50) * 100) * 0.3; // Rough estimation
+    const expenseScore = expenseRatio > 90 ? 0 : Math.min(100, (1 - (expenseRatio - 50)/50) * 100) * 0.3; 
 
     // 3. Goal Health (Are goals progressing?) - Weight 30%
     const goalsOnTrack = savingsGoals.filter(g => g.currentAmount > 0).length;
@@ -397,3 +397,4 @@ const Dashboard: React.FC<DashboardProps> = ({ transactions, savingsGoals, budge
 };
 
 export default Dashboard;
+    

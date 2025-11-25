@@ -35,7 +35,7 @@ const INITIAL_USERS: User[] = [
     username: 'carlos',
     password: '123',
     name: 'Carlos Silva',
-    role: UserRole.MANAGER, // Agora é Gestor de Família
+    role: UserRole.MANAGER,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos',
     status: UserStatus.APPROVED,
     createdBy: 'u0',
@@ -603,3 +603,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+    

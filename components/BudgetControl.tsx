@@ -89,7 +89,6 @@ const BudgetControl: React.FC<BudgetControlProps> = ({
               <p className="text-blue-100 font-medium max-w-xl">Defina tetos de gastos para cada categoria. Manter-se dentro do orçamento é o primeiro passo para a liberdade financeira.</p>
             </div>
             <button 
-              
               onClick={handleAiSuggestion}
               disabled={isSuggesting}
               className="bg-white/20 backdrop-blur-md border border-white/30 text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-white/30 transition disabled:opacity-70"
@@ -173,3 +172,4 @@ const BudgetControl: React.FC<BudgetControlProps> = ({
 };
 
 export default BudgetControl;
+    

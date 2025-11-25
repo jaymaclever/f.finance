@@ -242,3 +242,4 @@ const InflationControl: React.FC<InflationControlProps> = ({
 };
 
 export default InflationControl;
+    
