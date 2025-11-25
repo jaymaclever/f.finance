@@ -1,59 +1,55 @@
-# Guia de Instalação Automática (Ubuntu Server)
+# Instalação do Gestor Financeiro (Linux/Proxmox)
 
-Este guia instala o **Gestor Financeiro Familiar** em um servidor **Ubuntu 20.04/22.04/24.04** (físico, VM Proxmox ou VPS).
+## Pré-requisitos
+- Uma máquina virtual (VM) ou servidor rodando **Ubuntu 20.04, 22.04 ou 24.04**.
+- Acesso à internet na VM.
+- Uma chave de API do Google Gemini (Grátis em aistudio.google.com).
 
-## Instalação em 1 Passo
+## Passo a Passo
 
-Se você já clonou este repositório na sua máquina virtual, execute:
-
+### 1. Coloque os arquivos na VM
+Se você estiver usando Git:
 ```bash
-sudo bash deploy.sh
+git clone https://github.com/SEU_USUARIO/gestor-financeiro.git
+cd gestor-financeiro
 ```
+Ou se copiou os arquivos manualmente, navegue até a pasta onde eles estão.
+
+### 2. Dê permissão de execução
+```bash
+chmod +x deploy.sh
+```
+
+### 3. Execute a instalação
+```bash
+sudo ./deploy.sh
+```
+
+O script fará todo o trabalho automaticamente:
+- Instalará Node.js e Nginx.
+- Compilará o site.
+- Configurará o servidor web.
+
+### 4. Acesse
+Abra o navegador e digite o IP que aparecerá no final da instalação (ex: `http://192.168.1.50`).
 
 ---
 
-## Instalação do Zero (Do GitHub para VM)
+## Configuração Pós-Instalação (Obrigatório para IA)
 
-Se sua VM está vazia, siga estes 3 comandos:
+O aplicativo iniciará sem a inteligência artificial ativada. Para ativar:
 
-1. **Atualize e instale o Git:**
-   ```bash
-   sudo apt update && sudo apt install -y git
-   ```
+1.  Faça login com **Usuário:** `admin` e **Senha:** `admin`.
+2.  No menu lateral, vá em **Configurações**.
+3.  Abra a seção **Integrações & IA**.
+4.  Cole sua **Google Gemini API Key** e salve.
 
-2. **Clone o Repositório:**
-   ```bash
-   git clone https://github.com/SEU_USUARIO/gestor-financeiro.git
-   cd gestor-financeiro
-   ```
+---
 
-3. **Execute o Instalador Automático:**
-   ```bash
-   chmod +x deploy.sh
-   sudo ./deploy.sh
-   ```
+## Solução de Problemas
 
-## O que o script faz?
+**Erro: Permissão negada**
+Certifique-se de rodar com `sudo`.
 
-1. **Sistema:** Atualiza o Ubuntu e configura o Firewall (UFW) para permitir tráfego Web.
-2. **Ambiente:** Instala **Node.js v20** e **Nginx**.
-3. **App:** 
-   - Move os arquivos para `/var/www/gestor-financeiro`.
-   - Instala as dependências e faz o "Build" (otimização) do site.
-4. **Servidor Web:** Configura o Nginx para servir o aplicativo e iniciar automaticamente se o servidor reiniciar.
-
-## Configuração Pós-Instalação (Importante)
-
-Após a instalação, o aplicativo estará acessível no IP do servidor, mas as funções de IA (Gemini) não funcionarão imediatamente.
-
-1. **Acesse o App:** Abra `http://IP-DA-SUA-VM` no navegador.
-2. **Faça Login:**
-   - Usuário: `admin`
-   - Senha: `admin`
-3. **Configure a IA:**
-   - Vá no menu lateral **Configurações**.
-   - Abra a aba **Integrações & IA**.
-   - Cole sua **Google Gemini API Key** e salve.
-
-**Para atualizar para uma nova versão do código:**
-Execute novamente o comando `sudo ./deploy.sh` dentro da pasta.
+**Atualizar a aplicação**
+Se você mudar o código, basta rodar `sudo ./deploy.sh` novamente na pasta. Ele vai reconstruir e atualizar o site sem perder as configurações do servidor.
