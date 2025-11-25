@@ -11,7 +11,6 @@ import BudgetControl from './components/BudgetControl';
 import InflationControl from './components/InflationControl';
 import Simulations from './components/Simulations';
 import Login from './components/Login';
-import Tutorial from './components/Tutorial';
 import AIAssistant from './components/AIAssistant'; 
 import NotificationsMenu from './components/NotificationsMenu';
 import { Menu, Moon, Sun, Globe } from 'lucide-react';
@@ -497,8 +496,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-[#0f172a] overflow-hidden font-sans text-slate-800 dark:text-slate-100 transition-colors duration-300">
-      <Tutorial currentUser={currentUser} currentView={currentView} />
+    <div className="flex h-screen bg-slate-50 dark:bg-[#0b1120] overflow-hidden font-sans text-slate-800 dark:text-slate-100 transition-colors duration-300">
+      
       <Sidebar 
         appName={appName}
         currentUser={currentUser}
@@ -517,7 +516,7 @@ const App: React.FC = () => {
       />
 
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        <header className="flex items-center justify-between px-6 py-4 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 border-b border-slate-200 dark:border-slate-700/50 shadow-sm transition-colors duration-300">
+        <header className="glass z-20 px-6 py-3 sticky top-0 flex items-center justify-between transition-colors duration-300">
           <div className="flex items-center">
             <button 
               onClick={() => setIsMobileMenuOpen(true)}
@@ -525,15 +524,18 @@ const App: React.FC = () => {
             >
               <Menu size={24} />
             </button>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white capitalize">
-              {currentView === 'dashboard' ? 'Painel Geral' : currentView === 'simulations' ? 'Simulação de Empréstimos' : currentView === 'transactions' ? 'Transações' : currentView === 'budget' ? 'Orçamentos' : currentView === 'goals' ? 'Metas' : currentView === 'inflation' ? 'Controle de Inflação' : currentView === 'admin' ? 'Administração' : 'Modo Família'}
+            <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white capitalize tracking-tight">
+              {currentView === 'dashboard' ? 'Painel Geral' : currentView === 'simulations' ? 'Simulações' : currentView === 'transactions' ? 'Transações' : currentView === 'budget' ? 'Orçamentos' : currentView === 'goals' ? 'Metas' : currentView === 'inflation' ? 'Controle de Inflação' : currentView === 'admin' ? 'Administração' : 'Modo Família'}
             </h2>
           </div>
           
-          <div className="flex items-center space-x-3">
-             <div className="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-200 dark:border-slate-700">
-              <Globe size={16} className="text-primary-500 mr-2" />
-              <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="bg-transparent border-none text-sm font-bold text-slate-700 dark:text-slate-200 outline-none cursor-pointer">
+          <div className="flex items-center space-x-2 md:space-x-4">
+             <div 
+               
+               className="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm"
+             >
+              <Globe size={14} className="text-slate-400 mr-2" />
+              <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="bg-transparent border-none text-xs font-bold text-slate-700 dark:text-slate-200 outline-none cursor-pointer uppercase">
                 <option value="AOA">AOA (Kz)</option>
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
@@ -552,20 +554,19 @@ const App: React.FC = () => {
             />
 
             <button 
-              data-tour="theme-toggle" 
               onClick={() => setDarkMode(!darkMode)} 
-              className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition"
+              className="p-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 shadow-sm border border-slate-200 dark:border-slate-700 transition"
               title={darkMode ? "Mudar para Modo Claro" : "Mudar para Modo Escuro"}
             >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
           </div>
         </header>
 
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-8 scroll-smooth">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto space-y-8 pb-20">
             {currentView === 'dashboard' && <Dashboard transactions={transactions} savingsGoals={goals} budgets={budgets} currencyFormatter={formatCurrency} />}
-            {currentView === 'transactions' && <Transactions transactions={transactions} addTransaction={addTransaction} updateTransaction={updateTransaction} deleteTransaction={deleteTransaction} currentUserId={currentUser.id} currencyFormatter={formatCurrency} />}
+            {currentView === 'transactions' && <Transactions transactions={transactions} addTransaction={addTransaction} updateTransaction={updateTransaction} deleteTransaction={deleteTransaction} currentUserId={currentUser.id} currencyFormatter={formatCurrency} onExport={openExportModal} />}
             {currentView === 'budget' && <BudgetControl transactions={transactions} budgets={budgets} saveBudget={saveBudget} currencyFormatter={formatCurrency} />}
             {currentView === 'goals' && <Goals goals={goals} addGoal={addGoal} deleteGoal={deleteGoal} addContribution={addGoalContribution} editContribution={editGoalContribution} deleteContribution={deleteGoalContribution} currencyFormatter={formatCurrency} currentUser={currentUser} />}
             {currentView === 'inflation' && <InflationControl rateProvider={rateProvider} setRateProvider={setRateProvider} currencyFormatter={formatCurrency} />}
@@ -583,13 +584,13 @@ const App: React.FC = () => {
              <div className="space-y-4">
                <div>
                  <label className="text-xs font-bold text-slate-500 uppercase">Data Inicial</label>
-                 <input type="date" value={exportStartDate} onChange={e => setExportStartDate(e.target.value)} className="w-full mt-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white" />
+                 <input type="date" value={exportStartDate} onChange={e => setExportStartDate(e.target.value)} className="w-full mt-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary-500" />
                </div>
                <div>
                  <label className="text-xs font-bold text-slate-500 uppercase">Data Final</label>
-                 <input type="date" value={exportEndDate} onChange={e => setExportEndDate(e.target.value)} className="w-full mt-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white" />
+                 <input type="date" value={exportEndDate} onChange={e => setExportEndDate(e.target.value)} className="w-full mt-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary-500" />
                </div>
-               <div className="flex gap-3 pt-2">
+               <div className="flex gap-3 pt-4">
                  <button onClick={() => setShowExportModal(false)} className="flex-1 py-3 text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition">Cancelar</button>
                  <button onClick={handleExportConfirm} className="flex-1 py-3 bg-primary-600 text-white font-bold rounded-xl hover:bg-primary-700 shadow-lg shadow-primary-500/20 transition">Confirmar</button>
                </div>

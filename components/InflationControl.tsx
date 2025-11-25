@@ -87,7 +87,7 @@ const InflationControl: React.FC<InflationControlProps> = ({
             </p>
           </div>
           
-          <div className="mt-4 md:mt-0 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30" data-tour="inflation-source">
+          <div className="mt-4 md:mt-0 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
             <label className="flex items-center text-xs font-bold text-rose-100 uppercase mb-1 px-1">
               Fonte de Dados
               <Hint text="Escolha entre a taxa oficial do BNA, taxas globais de Forex ou a taxa informal (Kinguila) para simulações mais realistas." />
@@ -124,7 +124,7 @@ const InflationControl: React.FC<InflationControlProps> = ({
 
         {/* Calculadora de Poder de Compra (Restored Rich UI) */}
         <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700 flex flex-col justify-center">
-           <h3 className="font-bold text-slate-800 dark:text-white mb-6 flex items-center" data-tour="purchasing-power">
+           <h3 className="font-bold text-slate-800 dark:text-white mb-6 flex items-center">
              <ShoppingCart className="mr-2 text-indigo-500" /> Calculadora de Poder de Compra
            </h3>
            

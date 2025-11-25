@@ -42,46 +42,23 @@ Uma aplicação web completa, moderna e inteligente para gestão financeira pess
 
 ## 🚀 Instalação Automática (Proxmox / Linux VM)
 
-Instale o sistema completo (App + Servidor Web Nginx) com **um único comando** em sua VM Ubuntu ou Debian.
+Instale o sistema completo (App + Servidor Web Nginx) em sua VM Ubuntu ou Debian com os seguintes comandos:
 
-1. Acesse o terminal da sua VM (via SSH ou Console do Proxmox).
-2. Execute:
-
-```bash
-chmod +x setup.sh && sudo ./setup.sh
-```
-
-*Nota: O script solicitará sua chave da API do Google Gemini durante a instalação.*
-
-O sistema estará acessível em `http://IP-DA-SUA-VM` e iniciará automaticamente no boot.
-
----
-
-## 💻 Instalação Manual (Desenvolvimento)
-
-Para rodar localmente em sua máquina:
-
-1. **Clone o repositório:**
+1. **Acesse sua VM e baixe o projeto:**
    ```bash
-   git clone https://github.com/seu-usuario/gestor-financeiro.git
+   git clone https://github.com/SEU_USUARIO/gestor-financeiro.git
    cd gestor-financeiro
    ```
 
-2. **Instale as dependências:**
+2. **Execute o instalador:**
    ```bash
-   npm install
+   chmod +x deploy.sh
+   sudo ./deploy.sh
    ```
 
-3. **Configure a API Key:**
-   Crie um arquivo `.env` na raiz:
-   ```env
-   API_KEY=sua_chave_gemini_aqui
-   ```
+*O script fará tudo: atualizará o sistema, instalará Node.js e Nginx, configurará o firewall e iniciará o aplicativo.*
 
-4. **Inicie o servidor:**
-   ```bash
-   npm run dev
-   ```
+O sistema estará acessível em `http://IP-DA-SUA-VM` e iniciará automaticamente no boot.
 
 ---
 

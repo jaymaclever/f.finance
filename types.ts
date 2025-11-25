@@ -159,12 +159,6 @@ export interface FamilyEvent {
   description?: string;
 }
 
-export interface TutorialStep {
-  target: string;
-  title: string;
-  content: string;
-}
-
 export interface UserBehaviorAnalysis {
   persona: string; // ex: "Poupador", "Gastador"
   patternDescription: string;

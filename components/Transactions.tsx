@@ -2,7 +2,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { Transaction, TransactionType } from '../types';
 import { categorizeTransaction, parseTransactionFromText, parseTransactionFromAudio } from '../services/geminiService';
-import { Plus, Paperclip, Loader2, FileText, Trash2, Edit2, ArrowDownCircle, ArrowUpCircle, Search, Sparkles, Mic, Square, RefreshCw, CalendarClock, CreditCard, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Paperclip, Loader2, Trash2, Edit2, ArrowDownCircle, ArrowUpCircle, Search, Sparkles, Mic, Square, RefreshCw, CalendarClock, CreditCard, X, ChevronLeft, ChevronRight, FileText, FileSpreadsheet } from 'lucide-react';
 import Hint from './Hint';
 
 interface TransactionsProps {
@@ -12,6 +12,7 @@ interface TransactionsProps {
   deleteTransaction: (id: string) => void;
   currentUserId: string;
   currencyFormatter: (value: number) => string;
+  onExport: (type: 'PDF' | 'CSV') => void;
 }
 
 const ITEMS_PER_PAGE = 10;
@@ -22,7 +23,8 @@ const Transactions: React.FC<TransactionsProps> = ({
   updateTransaction,
   deleteTransaction,
   currentUserId,
-  currencyFormatter
+  currencyFormatter,
+  onExport
 }) => {
   const [activeTab, setActiveTab] = useState<'history' | 'subscriptions'>('history');
   const [showForm, setShowForm] = useState(false);
@@ -246,7 +248,7 @@ const Transactions: React.FC<TransactionsProps> = ({
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Smart Input Section */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 rounded-3xl shadow-lg shadow-indigo-500/20 text-white relative overflow-hidden" data-tour="smart-input">
+      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 rounded-3xl shadow-lg shadow-indigo-500/20 text-white relative overflow-hidden">
          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -mr-16 -mt-16"></div>
          <h3 className="flex items-center text-lg font-bold mb-3 relative z-10">
            <Sparkles className="mr-2 text-yellow-300" /> Registro Inteligente com IA
@@ -288,28 +290,47 @@ const Transactions: React.FC<TransactionsProps> = ({
          {isRecording && <p className="text-xs text-rose-200 mt-2 font-bold animate-pulse absolute bottom-2 left-8">Gravando... Fale sua transação.</p>}
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Transações</h2>
-          <p className="text-slate-500 text-sm">Gerencie entradas e saídas detalhadas.</p>
-        </div>
-        
-        <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700" data-tour="transactions-tabs">
-           <button 
-             onClick={() => setActiveTab('history')}
-             className={`px-5 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-white dark:bg-slate-600 shadow-sm text-primary-600 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-           >
-             Histórico
-           </button>
-           <button 
-             onClick={() => setActiveTab('subscriptions')}
-             className={`px-5 py-2 text-sm font-bold rounded-lg transition-all flex items-center ${activeTab === 'subscriptions' ? 'bg-white dark:bg-slate-600 shadow-sm text-primary-600 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-           >
-             <RefreshCw size={14} className="mr-2"/> Assinaturas
-           </button>
+      <div className="flex flex-col xl:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col md:flex-row gap-4 items-center w-full xl:w-auto">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Transações</h2>
+            <p className="text-slate-500 text-sm hidden md:block">Gerencie entradas e saídas detalhadas.</p>
+          </div>
+          
+          <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+             <button 
+               onClick={() => setActiveTab('history')}
+               className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-white dark:bg-slate-600 shadow-sm text-primary-600 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+             >
+               Histórico
+             </button>
+             <button 
+               onClick={() => setActiveTab('subscriptions')}
+               className={`px-4 py-2 text-sm font-bold rounded-lg transition-all flex items-center ${activeTab === 'subscriptions' ? 'bg-white dark:bg-slate-600 shadow-sm text-primary-600 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+             >
+               <RefreshCw size={14} className="mr-2"/> Assinaturas
+             </button>
+          </div>
         </div>
 
-        <div className="flex gap-3 w-full md:w-auto">
+        <div className="flex flex-col md:flex-row gap-3 w-full xl:w-auto">
+          <div className="flex gap-2">
+            <button 
+              onClick={() => onExport('PDF')}
+              className="flex-1 md:flex-none flex items-center justify-center px-4 py-2.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-300 rounded-xl hover:bg-rose-100 dark:hover:bg-rose-900/40 transition font-bold text-sm border border-rose-100 dark:border-rose-800"
+              title="Exportar PDF"
+            >
+              <FileText size={18} className="mr-2" /> PDF
+            </button>
+            <button 
+              onClick={() => onExport('CSV')}
+              className="flex-1 md:flex-none flex items-center justify-center px-4 py-2.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-300 rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition font-bold text-sm border border-emerald-100 dark:border-emerald-800"
+              title="Exportar Excel (CSV)"
+            >
+              <FileSpreadsheet size={18} className="mr-2" /> Excel
+            </button>
+          </div>
+
           <div className="relative flex-1 md:w-56">
             <Search className="absolute left-3 top-3 text-slate-400" size={18} />
             <input 
@@ -321,9 +342,8 @@ const Transactions: React.FC<TransactionsProps> = ({
             />
           </div>
           <button 
-            data-tour="btn-new-transaction"
             onClick={handleAddNew}
-            className="flex items-center px-5 py-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition shadow-lg shadow-primary-500/20 font-bold"
+            className="flex items-center justify-center px-5 py-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition shadow-lg shadow-primary-500/20 font-bold"
           >
             <Plus size={20} className="mr-2" />
             Nova

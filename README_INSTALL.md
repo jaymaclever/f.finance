@@ -39,14 +39,21 @@ Se sua VM está vazia, siga estes 3 comandos:
 2. **Ambiente:** Instala **Node.js v20** e **Nginx**.
 3. **App:** 
    - Move os arquivos para `/var/www/gestor-financeiro`.
-   - Pede sua **Chave da API Gemini** e salva no sistema.
    - Instala as dependências e faz o "Build" (otimização) do site.
 4. **Servidor Web:** Configura o Nginx para servir o aplicativo e iniciar automaticamente se o servidor reiniciar.
 
-## Pós-Instalação
+## Configuração Pós-Instalação (Importante)
 
-- Acesse o aplicativo digitando o IP do servidor no navegador.
-- O sistema inicia automaticamente no boot.
+Após a instalação, o aplicativo estará acessível no IP do servidor, mas as funções de IA (Gemini) não funcionarão imediatamente.
+
+1. **Acesse o App:** Abra `http://IP-DA-SUA-VM` no navegador.
+2. **Faça Login:**
+   - Usuário: `admin`
+   - Senha: `admin`
+3. **Configure a IA:**
+   - Vá no menu lateral **Configurações**.
+   - Abra a aba **Integrações & IA**.
+   - Cole sua **Google Gemini API Key** e salve.
 
 **Para atualizar para uma nova versão do código:**
 Execute novamente o comando `sudo ./deploy.sh` dentro da pasta.

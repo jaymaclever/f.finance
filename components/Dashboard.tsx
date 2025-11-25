@@ -228,7 +228,7 @@ const Dashboard: React.FC<DashboardProps> = ({ transactions, savingsGoals, budge
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Premium Stats Cards (Left Side, 3 cols) */}
-        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-tour="dashboard-cards">
+        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Saldo */}
           <div className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl p-6 text-white shadow-lg shadow-indigo-500/20 relative overflow-hidden">
             <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-2xl"></div>

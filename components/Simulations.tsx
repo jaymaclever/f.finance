@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Calculator, Upload, Loader2, DollarSign, Calendar, Percent, PieChart as PieChartIcon, ArrowRight, Save, Clock, Trash2 } from 'lucide-react';
 import { LoanSimulation, AmortizationRow, SavedSimulation } from '../types';
@@ -40,6 +39,11 @@ const Simulations: React.FC<SimulationsProps> = ({
     try {
       const pdfjsLib = (window as any).pdfjsLib;
       if (!pdfjsLib) throw new Error("Biblioteca PDF não carregada.");
+
+      // Fallback de segurança para o Worker se não estiver definido globalmente
+      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+      }
 
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;

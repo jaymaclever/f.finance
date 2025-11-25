@@ -89,7 +89,7 @@ const BudgetControl: React.FC<BudgetControlProps> = ({
               <p className="text-blue-100 font-medium max-w-xl">Defina tetos de gastos para cada categoria. Manter-se dentro do orçamento é o primeiro passo para a liberdade financeira.</p>
             </div>
             <button 
-              data-tour="ai-budget-suggest"
+              
               onClick={handleAiSuggestion}
               disabled={isSuggesting}
               className="bg-white/20 backdrop-blur-md border border-white/30 text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-white/30 transition disabled:opacity-70"
@@ -100,7 +100,7 @@ const BudgetControl: React.FC<BudgetControlProps> = ({
          </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-tour="budget-cards">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map(cat => {
           const limit = budgets.find(b => b.category === cat)?.limit || 0;
           const spent = categorySpending[cat] || 0;
