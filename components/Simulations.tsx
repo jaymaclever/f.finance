@@ -41,11 +41,6 @@ const Simulations: React.FC<SimulationsProps> = ({
       const pdfjsLib = (window as any).pdfjsLib;
       if (!pdfjsLib) throw new Error("Biblioteca PDF não carregada.");
 
-      // Fallback de segurança para o Worker se não estiver definido globalmente
-      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
-      }
-
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       
@@ -155,7 +150,7 @@ const Simulations: React.FC<SimulationsProps> = ({
           </p>
         </div>
         <button 
-          
+          data-tour="saved-simulations"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
           className="bg-white/20 backdrop-blur-sm p-3 rounded-xl hover:bg-white/30 transition flex items-center gap-2"
         >
@@ -168,7 +163,7 @@ const Simulations: React.FC<SimulationsProps> = ({
         <div className="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700">
           <div className="mb-6">
             <label 
-              
+              data-tour="pdf-upload"
               className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition bg-slate-50 dark:bg-slate-800/50"
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -339,4 +334,3 @@ const Simulations: React.FC<SimulationsProps> = ({
 };
 
 export default Simulations;
-    

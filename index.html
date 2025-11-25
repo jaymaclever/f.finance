@@ -39,13 +39,8 @@
               }
             },
             boxShadow: {
-              'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
-              'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)',
-              'glow': '0 0 20px rgba(139, 92, 246, 0.3)',
-              'inner-light': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.3)',
-            },
-            backgroundImage: {
-              'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+              'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+              'glow': '0 0 15px rgba(139, 92, 246, 0.3)',
             }
           }
         }
@@ -57,86 +52,67 @@
       
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 8px;
+        height: 8px;
       }
       ::-webkit-scrollbar-track {
         background: transparent;
       }
       ::-webkit-scrollbar-thumb {
         background: #cbd5e1;
-        border-radius: 10px;
+        border-radius: 4px;
       }
       .dark ::-webkit-scrollbar-thumb {
-        background: #334155;
+        background: #475569;
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
       }
 
       .glass {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
       }
       .dark .glass {
-        background: rgba(15, 23, 42, 0.8);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(30, 41, 59, 0.7);
       }
       
       @keyframes float {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-6px); }
+        50% { transform: translateY(-5px); }
         100% { transform: translateY(0px); }
       }
       .animate-float {
-        animation: float 4s ease-in-out infinite;
-      }
-      
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover, 
-      input:-webkit-autofill:focus, 
-      input:-webkit-autofill:active{
-          -webkit-box-shadow: 0 0 0 30px white inset !important;
-          -webkit-text-fill-color: #1e293b !important;
-          transition: background-color 5000s ease-in-out 0s;
-      }
-      .dark input:-webkit-autofill,
-      .dark input:-webkit-autofill:hover, 
-      .dark input:-webkit-autofill:focus, 
-      .dark input:-webkit-autofill:active{
-          -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
-          -webkit-text-fill-color: white !important;
+        animation: float 3s ease-in-out infinite;
       }
     </style>
   <script type="importmap">
 {
   "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^0.2.1",
-    "react/": "https://aistudiocdn.com/react@^18.2.0/",
-    "react": "https://aistudiocdn.com/react@^18.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^18.2.0/",
-    "react-dom": "https://aistudiocdn.com/react-dom@^18.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
     "jspdf": "https://aistudiocdn.com/jspdf@^3.0.4",
     "jspdf-autotable": "https://aistudiocdn.com/jspdf-autotable@^3.8.2",
     "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
     "pdfjs-dist/": "https://aistudiocdn.com/pdfjs-dist@^4.0.379/",
-    "vite": "https://aistudiocdn.com/vite@^5.0.8",
-    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^4.2.1"
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
   }
 }
 </script>
 <!-- PDF.js Worker Configuration -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
     if (window.pdfjsLib) {
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 </script>
 </head>
-  <body class="bg-slate-50 dark:bg-[#0b1120] text-slate-800 dark:text-slate-100 transition-colors duration-300 antialiased selection:bg-primary-500 selection:text-white">
+  <body class="bg-slate-50 dark:bg-[#0f172a] text-slate-800 dark:text-slate-100 transition-colors duration-300 antialiased selection:bg-primary-500 selection:text-white">
     <div id="root"></div>
   </body>
 </html>

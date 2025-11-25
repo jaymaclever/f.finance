@@ -2,25 +2,10 @@
 import { GoogleGenAI } from "@google/genai";
 import { Transaction, LoanSimulation, BudgetLimit, UserBehaviorAnalysis } from "../types";
 
-// Helper to retrieve the API key dynamically (LocalStorage > Env Var)
-const getApiKey = () => localStorage.getItem('gemini_api_key') || process.env.API_KEY || '';
+const apiKey = process.env.API_KEY || '';
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
-// Helper to instantiate the client with the current key
-const getAiClient = () => {
-  const apiKey = getApiKey();
-  return apiKey ? new GoogleGenAI({ apiKey }) : null;
-};
-
-// Export functions to manage the key from the UI
-export const setGeminiKey = (key: string) => {
-  localStorage.setItem('gemini_api_key', key);
-};
-
-export const hasGeminiKey = (): boolean => {
-  return !!getApiKey();
-};
-
-// --- EXISTING FUNCTIONS REFACTORED ---
+// --- EXISTING FUNCTIONS ---
 
 export const categorizeTransaction = async (description: string, history: Transaction[] = []): Promise<string> => {
   const exactMatch = history.find(t => t.description.toLowerCase().trim() === description.toLowerCase().trim());
@@ -29,7 +14,6 @@ export const categorizeTransaction = async (description: string, history: Transa
     return exactMatch.category;
   }
 
-  const ai = getAiClient();
   if (!ai) return "Geral";
 
   try {
@@ -55,8 +39,7 @@ export const categorizeTransaction = async (description: string, history: Transa
 };
 
 export const getFinancialAdvice = async (transactions: any[], goals: any[]): Promise<string> => {
-  const ai = getAiClient();
-  if (!ai) return "Adicione sua chave de API nas configurações para receber conselhos personalizados.";
+  if (!ai) return "Adicione sua chave de API para receber conselhos personalizados.";
 
   try {
     const summary = JSON.stringify({
@@ -81,8 +64,7 @@ export const getFinancialAdvice = async (transactions: any[], goals: any[]): Pro
 };
 
 export const analyzeLoanDocument = async (text: string): Promise<Partial<LoanSimulation>> => {
-  const ai = getAiClient();
-  if (!ai) throw new Error("API Key não configurada. Vá em Configurações > Integrações.");
+  if (!ai) throw new Error("API Key não configurada");
 
   try {
     const prompt = `
@@ -121,8 +103,7 @@ export const analyzeLoanDocument = async (text: string): Promise<Partial<LoanSim
 // --- NEW FUNCTIONS ---
 
 export const parseTransactionFromText = async (input: string): Promise<Partial<Transaction>> => {
-  const ai = getAiClient();
-  if (!ai) throw new Error("API Key não configurada. Vá em Configurações > Integrações.");
+  if (!ai) throw new Error("API Key não configurada");
 
   try {
     const prompt = `
@@ -159,8 +140,7 @@ export const parseTransactionFromText = async (input: string): Promise<Partial<T
 };
 
 export const parseTransactionFromAudio = async (base64Audio: string): Promise<Partial<Transaction>> => {
-  const ai = getAiClient();
-  if (!ai) throw new Error("API Key não configurada. Vá em Configurações > Integrações.");
+  if (!ai) throw new Error("API Key não configurada");
 
   try {
     const prompt = `
@@ -204,8 +184,7 @@ export const parseTransactionFromAudio = async (base64Audio: string): Promise<Pa
 };
 
 export const getAiChatResponse = async (question: string, contextData: any): Promise<string> => {
-  const ai = getAiClient();
-  if (!ai) return "Por favor, configure sua API Key nas configurações para usar o chat.";
+  if (!ai) return "Por favor, configure sua API Key para usar o chat.";
 
   try {
     // Reduzimos o contexto para não exceder tokens, focando em resumos
@@ -242,7 +221,6 @@ export const getAiChatResponse = async (question: string, contextData: any): Pro
 };
 
 export const suggestBudgets = async (history: Transaction[]): Promise<BudgetLimit[]> => {
-  const ai = getAiClient();
   if (!ai) return [];
 
   try {
@@ -276,8 +254,7 @@ export const suggestBudgets = async (history: Transaction[]): Promise<BudgetLimi
 };
 
 export const analyzeUserBehavior = async (transactions: Transaction[]): Promise<UserBehaviorAnalysis> => {
-  const ai = getAiClient();
-  if (!ai) throw new Error("API Key ausente. Configure em Admin > Integrações.");
+  if (!ai) throw new Error("API Key ausente");
 
   // Agrupar dados para economizar tokens
   const expenses = transactions.filter(t => t.type === 'DESPESA');

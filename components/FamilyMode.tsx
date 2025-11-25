@@ -79,7 +79,8 @@ const FamilyMode: React.FC<FamilyModeProps> = ({
 
   // Filter tasks and events for the family (assuming they are shared within family context or global - here we filter if assignedTo is in family)
   const familyTasks = tasks.filter(t => familyUsers.some(u => u.id === t.assignedTo));
-  // Events are currently global in type, usually should link to familyId. Assuming global list filtered by app context or we filter purely by view. 
+  // Events are currently global in type, usually should link to familyId. Assuming global list filtered by logic or add familyId to event. 
+  // For now, let's assume events are filtered by app context or we filter purely by view. 
   
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -181,7 +182,7 @@ const FamilyMode: React.FC<FamilyModeProps> = ({
       {/* To-Do List & Calendar */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <section 
-          
+          data-tour="family-tasks"
           className="bg-white dark:bg-slate-800 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700 p-6 flex flex-col h-[500px]"
         >
           <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center">
@@ -274,4 +275,3 @@ const FamilyMode: React.FC<FamilyModeProps> = ({
 };
 
 export default FamilyMode;
-    

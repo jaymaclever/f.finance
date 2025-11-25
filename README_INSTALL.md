@@ -1,55 +1,49 @@
-# Instalação do Gestor Financeiro (Linux/Proxmox)
+# Guia de Instalação Automática (Proxmox/Linux)
+
+Este guia instala o **Gestor Financeiro Familiar** e o configura como um serviço que inicia automaticamente no boot.
 
 ## Pré-requisitos
-- Uma máquina virtual (VM) ou servidor rodando **Ubuntu 20.04, 22.04 ou 24.04**.
-- Acesso à internet na VM.
-- Uma chave de API do Google Gemini (Grátis em aistudio.google.com).
+- Uma VM ou Container (LXC) no Proxmox rodando **Ubuntu 20.04+** ou **Debian 11+**.
+- Acesso root ou sudo.
 
 ## Passo a Passo
 
-### 1. Coloque os arquivos na VM
-Se você estiver usando Git:
-```bash
-git clone https://github.com/SEU_USUARIO/gestor-financeiro.git
-cd gestor-financeiro
-```
-Ou se copiou os arquivos manualmente, navegue até a pasta onde eles estão.
+1. **Acesse o terminal da VM**
 
-### 2. Dê permissão de execução
-```bash
-chmod +x deploy.sh
-```
+2. **Baixe o código (Clone)**
+   ```bash
+   # Se estiver usando git
+   git clone https://github.com/SEU_USUARIO/NOME_DO_REPO.git
+   cd NOME_DO_REPO
+   ```
 
-### 3. Execute a instalação
-```bash
-sudo ./deploy.sh
-```
+3. **Execute o Instalador**
+   ```bash
+   chmod +x install.sh
+   sudo ./install.sh
+   ```
 
-O script fará todo o trabalho automaticamente:
-- Instalará Node.js e Nginx.
-- Compilará o site.
-- Configurará o servidor web.
+4. **Siga as instruções**
+   - O script pedirá sua chave da API Gemini (Google AI).
+   - Ele instalará o Node.js, Nginx e fará o build do projeto.
 
-### 4. Acesse
-Abra o navegador e digite o IP que aparecerá no final da instalação (ex: `http://192.168.1.50`).
+## O que acontece "Debaixo do Capô"?
+- O script compila o React para HTML/CSS/JS estático na pasta `dist`.
+- O **Nginx** é configurado para servir essa pasta.
+- O comando `systemctl enable nginx` garante que o servidor web inicie sozinho se você reiniciar a VM.
 
----
+## Manutenção
 
-## Configuração Pós-Instalação (Obrigatório para IA)
+- **Atualizar a aplicação:**
+  ```bash
+  cd /var/www/gestor-financeiro
+  git pull
+  npm install
+  npm run build
+  sudo systemctl restart nginx
+  ```
 
-O aplicativo iniciará sem a inteligência artificial ativada. Para ativar:
-
-1.  Faça login com **Usuário:** `admin` e **Senha:** `admin`.
-2.  No menu lateral, vá em **Configurações**.
-3.  Abra a seção **Integrações & IA**.
-4.  Cole sua **Google Gemini API Key** e salve.
-
----
-
-## Solução de Problemas
-
-**Erro: Permissão negada**
-Certifique-se de rodar com `sudo`.
-
-**Atualizar a aplicação**
-Se você mudar o código, basta rodar `sudo ./deploy.sh` novamente na pasta. Ele vai reconstruir e atualizar o site sem perder as configurações do servidor.
+- **Ver logs de erro:**
+  ```bash
+  sudo tail -f /var/log/nginx/error.log
+  ```
