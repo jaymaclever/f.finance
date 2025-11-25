@@ -1,49 +1,52 @@
-# Guia de Instalação Automática (Proxmox/Linux)
+# Guia de Instalação Automática (Ubuntu Server)
 
-Este guia instala o **Gestor Financeiro Familiar** e o configura como um serviço que inicia automaticamente no boot.
+Este guia instala o **Gestor Financeiro Familiar** em um servidor **Ubuntu 20.04/22.04/24.04** (físico, VM Proxmox ou VPS).
 
-## Pré-requisitos
-- Uma VM ou Container (LXC) no Proxmox rodando **Ubuntu 20.04+** ou **Debian 11+**.
-- Acesso root ou sudo.
+## Instalação em 1 Passo
 
-## Passo a Passo
+Se você já clonou este repositório na sua máquina virtual, execute:
 
-1. **Acesse o terminal da VM**
+```bash
+sudo bash deploy.sh
+```
 
-2. **Baixe o código (Clone)**
+---
+
+## Instalação do Zero (Do GitHub para VM)
+
+Se sua VM está vazia, siga estes 3 comandos:
+
+1. **Atualize e instale o Git:**
    ```bash
-   # Se estiver usando git
-   git clone https://github.com/SEU_USUARIO/NOME_DO_REPO.git
-   cd NOME_DO_REPO
+   sudo apt update && sudo apt install -y git
    ```
 
-3. **Execute o Instalador**
+2. **Clone o Repositório:**
    ```bash
-   chmod +x install.sh
-   sudo ./install.sh
+   git clone https://github.com/SEU_USUARIO/gestor-financeiro.git
+   cd gestor-financeiro
    ```
 
-4. **Siga as instruções**
-   - O script pedirá sua chave da API Gemini (Google AI).
-   - Ele instalará o Node.js, Nginx e fará o build do projeto.
+3. **Execute o Instalador Automático:**
+   ```bash
+   chmod +x deploy.sh
+   sudo ./deploy.sh
+   ```
 
-## O que acontece "Debaixo do Capô"?
-- O script compila o React para HTML/CSS/JS estático na pasta `dist`.
-- O **Nginx** é configurado para servir essa pasta.
-- O comando `systemctl enable nginx` garante que o servidor web inicie sozinho se você reiniciar a VM.
+## O que o script faz?
 
-## Manutenção
+1. **Sistema:** Atualiza o Ubuntu e configura o Firewall (UFW) para permitir tráfego Web.
+2. **Ambiente:** Instala **Node.js v20** e **Nginx**.
+3. **App:** 
+   - Move os arquivos para `/var/www/gestor-financeiro`.
+   - Pede sua **Chave da API Gemini** e salva no sistema.
+   - Instala as dependências e faz o "Build" (otimização) do site.
+4. **Servidor Web:** Configura o Nginx para servir o aplicativo e iniciar automaticamente se o servidor reiniciar.
 
-- **Atualizar a aplicação:**
-  ```bash
-  cd /var/www/gestor-financeiro
-  git pull
-  npm install
-  npm run build
-  sudo systemctl restart nginx
-  ```
+## Pós-Instalação
 
-- **Ver logs de erro:**
-  ```bash
-  sudo tail -f /var/log/nginx/error.log
-  ```
+- Acesse o aplicativo digitando o IP do servidor no navegador.
+- O sistema inicia automaticamente no boot.
+
+**Para atualizar para uma nova versão do código:**
+Execute novamente o comando `sudo ./deploy.sh` dentro da pasta.
